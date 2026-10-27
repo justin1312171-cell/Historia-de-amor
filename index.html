@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Un amor entre sombras</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #090914;
+  color: white;
+  font-family: Georgia, serif;
+  text-align: center;
+}
+
+h1 {
+  font-size: 27px;
+  margin: 18px 5px;
+  color: #ffd6e7;
+}
+
+#stage {
+  height: 58vh;
+  min-height: 350px;
+  max-height: 570px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(#171a42, #e88a93);
+  transition: background 2s;
+}
+
+#moon {
+  position: absolute;
+  top: 12%;
+  right: 16%;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: #fff1c7;
+  box-shadow: 0 0 35px #fff0b0;
+}
+
+#ground {
+  position: absolute;
+  bottom: 0;
+  height: 20%;
+  width: 100%;
+  background: #10101a;
+  border-radius: 50% 50% 0 0 / 15% 15% 0 0;
+}
+
+.person {
+  position: absolute;
+  bottom: 17%;
+  width: 90px;
+  height: 200px;
+  transition: left 2s, right 2s, transform 1s;
+}
+
+.head {
+  position: absolute;
+  top: 0;
+  left: 25px;
+  width: 42px;
+  height: 48px;
+  background: #05050a;
+  border-radius: 50%;
+}
+
+.bodyshape {
+  position: absolute;
+  top: 43px;
+  left: 15px;
+  width: 62px;
+  height: 100px;
+  background: #05050a;
+  border-radius: 35px 35px 8px 8px;
+}
+
+.leg {
+  position: absolute;
+  top: 125px;
+  left: 25px;
+  width: 19px;
+  height: 70px;
+  background: #05050a;
+  transform: rotate(5deg);
+  border-radius: 12px;
+}
+
+.leg.two {
+  left: 48px;
+  transform: rotate(-5deg);
+}
+
+.arm {
+  position: absolute;
+  top: 52px;
+  left: 9px;
+  width: 17px;
+  height: 82px;
+  background: #05050a;
+  transform: rotate(20deg);
+  border-radius: 12px;
+}
+
+.arm.two {
+  left: 66px;
+  transform: rotate(-20deg);
+}
+
+#man { left: 18%; }
+#woman { right: 18%; transform: scale(.96); }
+
+#caption {
+  min-height: 75px;
+  padding: 18px 15px 5px;
+  font-size: 19px;
+  line-height: 1.5;
+}
+
+#sceneTitle {
+  font-size: 22px;
+  color: #ffd6e7;
+  margin-top: 18px;
+}
+
+button {
+  background: #e9a5c2;
+  color: #20101c;
+  border: 0;
+  border-radius: 25px;
+  padding: 13px 19px;
+  margin: 7px 3px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+button:active { transform: scale(.96); }
+
+#progress {
+  width: 85%;
+  height: 7px;
+  background: #373044;
+  margin: 12px auto;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+#bar {
+  height: 100%;
+  width: 0%;
+  background: #f3a9cf;
+}
+
+#time {
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  color: #d5c8df;
+  margin: 8px;
+}
+
+.note {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: #bdb3c9;
+  padding: 8px 15px 22px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Un amor entre sombras ❤️</h1>
+
+<div id="sceneTitle">Una historia de dos corazones</div>
+
+<div id="stage">
+  <div id="moon"></div>
+
+  <div id="man" class="person">
+    <div class="head"></div>
+    <div class="bodyshape"></div>
+    <div class="leg"></div>
+    <div class="leg two"></div>
+    <div class="arm"></div>
+    <div class="arm two"></div>
+  </div>
+
+  <div id="woman" class="person">
+    <div class="head"></div>
+    <div class="bodyshape"></div>
+    <div class="leg"></div>
+    <div class="leg two"></div>
+    <div class="arm"></div>
+    <div class="arm two"></div>
+  </div>
+
+  <div id="ground"></div>
+</div>
+
+<div id="caption" aria-live="polite">
+  Dos desconocidos estaban a punto de cambiar sus vidas.
+</div>
+
+<div id="progress"><div id="bar"></div></div>
+<div id="time">Escena 1 de 6 · 00:00 / 02:00</div>
+
+<div>
+  <button id="play">▶ Reproducir</button>
+  <button id="pause">⏸ Pausar</button>
+  <button id="restart">↻ Reiniciar</button>
+</div>
+
+<div class="note">
+  Activa el sonido de tu teléfono para escuchar la narración.
+  La voz depende de las voces disponibles en tu navegador.
+</div>
+
+<script>
+(() => {
+  const scenes = [
+    {
+      title: "1. Un encuentro inesperado",
+      text: "En una tarde tranquila, dos desconocidos cruzaron sus miradas. Él sonrió tímidamente. Ella respondió con una sonrisa que parecía iluminar todo a su alrededor. Ninguno imaginaba que aquel instante cambiaría sus vidas.",
+      bg: "linear-gradient(#171a42,#e88a93)",
+      man: "35%",
+      woman: "53%",
+      pose: "meet"
+    },
+    {
+      title: "2. Nació el amor",
+      text: "Con el paso de los días, comenzaron a compartir paseos, sueños y secretos. Las conversaciones parecían interminables. Poco a poco, aquellos desconocidos se convirtieron en compañeros inseparables. Sin darse cuenta, se habían enamorado.",
+      bg: "linear-gradient(#34204e,#eaa6a0)",
+      man: "40%",
+      woman: "48%",
+      pose: "love"
+    },
+    {
+      title: "3. Una promesa bajo las estrellas",
+      text: "Una noche, bajo un cielo lleno de estrellas, se tomaron de las manos. Prometieron apoyarse incluso en los momentos difíciles. Él creyó que nunca la perdería. Ella soñó con un futuro a su lado.",
+      bg: "linear-gradient(#080d2b,#49416e)",
+      man: "42%",
+      woman: "47%",
+      pose: "love"
+    },
+    {
+      title: "4. El error que los separó",
+      text: "Pero un día, un malentendido se convirtió en una discusión. El orgullo les impidió escucharse. Se dijeron palabras que dolían y ninguno quiso dar el primer paso. Al caer la noche, cada uno se marchó por su lado.",
+      bg: "linear-gradient(#33313d,#77717f)",
+      man: "8%",
+      woman: "8%",
+      pose: "apart"
+    },
+    {
+      title: "5. El silencio de la ausencia",
+      text: "Pasaron los días. Él miraba los lugares donde habían sido felices. Ella guardaba en silencio los recuerdos de su amor. Ambos extrañaban aquellas pequeñas cosas que antes parecían insignificantes. Entonces comprendieron cuánto significaban el uno para el otro.",
+      bg: "linear-gradient(#17182e,#56617a)",
+      man: "7%",
+      woman: "7%",
+      pose: "apart"
+    },
+    {
+      title: "6. Una oportunidad para amar",
+      text: "Finalmente, él decidió regresar. No llegó con excusas, sino con una disculpa sincera. Ella lo escuchó y también reconoció sus errores. Se acercaron lentamente y se abrazaron. No sabían qué les depararía el futuro, pero estaban dispuestos a intentarlo de nuevo. Porque el amor no consiste en nunca equivocarse, sino en aprender, perdonar y elegir caminar juntos.",
+      bg: "linear-gradient(#40234f,#f5a6b7)",
+      man: "35%",
+      woman: "53%",
+      pose: "love"
+    }
+  ];
+
+  const stage = document.getElementById("stage");
+  const man = document.getElementById("man");
+  const woman = document.getElementById("woman");
+  const title = document.getElementById("sceneTitle");
+  const caption = document.getElementById("caption");
+  const bar = document.getElementById("bar");
+  const time = document.getElementById("time");
+
+  const sceneLength = 20000;
+  let current = 0;
+  let elapsed = 0;
+  let startedAt = 0;
+  let playing = false;
+  let finished = false;
+  let frame = null;
+  let generation = 0;
+
+  function stopVoice() {
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+    }
+  }
+
+  function speak(text) {
+    if (!("speechSynthesis" in window)) return;
+
+    stopVoice();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "es-ES";
+    utterance.rate = 0.86;
+    utterance.pitch = 1;
+
+    const voices = window.speechSynthesis.getVoices();
+    const spanish = voices.find(v =>
+      v.lang.toLowerCase().startsWith("es")
+    );
+
+    if (spanish) utterance.voice = spanish;
+
+    window.speechSynthesis.speak(utterance);
+  }
+
+  function showScene(index, narrate = true) {
+    current = index;
+    const s = scenes[index];
+
+    title.textContent = s.title;
+    caption.textContent = s.text;
+    stage.style.background = s.bg;
+
+    man.style.left = s.man;
+    woman.style.right = s.woman;
+
+    if (s.pose === "apart") {
+      man.style.transform = "rotate(-5deg)";
+      woman.style.transform = "rotate(5deg) scale(.96)";
+    } else if (s.pose === "love") {
+      man.style.transform = "rotate(0deg)";
+      woman.style.transform = "rotate(0deg) scale(.96)";
+    } else {
+      man.style.transform = "rotate(0deg)";
+      woman.style.transform = "rotate(0deg) scale(.96)";
+    }
+
+    if (narrate && playing) speak(s.text);
+
+    updateDisplay();
+  }
+
+  function updateDisplay() {
+    const total = current * sceneLength + elapsed;
+    bar.style.width = Math.min(100, total / 120000 * 100) + "%";
+
+    const seconds = Math.floor(total / 1000);
+    const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
+    const ss = String(seconds % 60).padStart(2, "0");
+
+    time.textContent =
+      `Escena ${current + 1} de 6 · ${mm}:${ss} / 02:00`;
+  }
+
+  function tick(now) {
+    if (!playing) return;
+
+    const delta = now - startedAt;
+    startedAt = now;
+    elapsed += delta;
+
+    if (elapsed >= sceneLength) {
+      elapsed = 0;
+
+      if (current < scenes.length - 1) {
+        showScene(current + 1, true);
+      } else {
+        finish();
+        return;
+      }
+    }
+
+    updateDisplay();
+    frame = requestAnimationFrame(tick);
+  }
+
+  function start() {
+    if (playing || finished) return;
+
+    playing = true;
+    startedAt = performance.now();
+
+    if (elapsed === 0) showScene(current, true);
+
+    frame = requestAnimationFrame(tick);
+  }
+
+  function pause() {
+    if (!playing) return;
+
+    elapsed += performance.now() - startedAt;
+    playing = false;
+
+    if (frame !== null) cancelAnimationFrame(frame);
+
+    stopVoice();
+    updateDisplay();
+  }
+
+  function finish() {
+    playing = false;
+    finished = true;
+    elapsed = sceneLength;
+    stopVoice();
+
+    title.textContent = "Un nuevo comienzo ❤️";
+    caption.textContent =
+      "A veces, una segunda oportunidad es el comienzo de la historia más bonita.";
+    bar.style.width = "100%";
+    time.textContent = "Historia terminada · 02:00";
+  }
+
+  function restart() {
+    playing = false;
+    finished = false;
+
+    if (frame !== null) cancelAnimationFrame(frame);
+
+    stopVoice();
+    current = 0;
+    elapsed = 0;
+
+    showScene(0, false);
+    start();
+  }
+
+  document.getElementById("play").addEventListener("click", start);
+  document.getElementById("pause").addEventListener("click", pause);
+  document.getElementById("restart").addEventListener("click", restart);
+
+  showScene(0, false);
+})();
+</script>
+
+</body>
+</html>
